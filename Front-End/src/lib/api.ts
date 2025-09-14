@@ -2,7 +2,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { useCallback } from "react";
 
-const API_BASE = "https://clipnote-2ymu.vercel.app/"; // your backend
+const API_BASE = "https://clipnote-2ymu.vercel.app"; // your backend
 
 export function useApi() {
   const { token } = useAuth();
