@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // ✅ Google login now calls backend
 const loginWithGoogle = async (credential: string) => {
   try {
-    const res = await fetch("http://localhost:3000/auth/google", {
+    const res = await fetch("https://clipnote-rho.vercel.app/auth/google", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token: credential }),
