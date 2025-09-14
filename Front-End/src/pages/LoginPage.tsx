@@ -24,7 +24,7 @@ export default function LoginPage() {
     setMessage("");
 
     try {
-      const res = await fetch("http://localhost:3000/auth/login", {
+      const res = await fetch("https://clipnote-2ymu.vercel.app/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -70,7 +70,6 @@ export default function LoginPage() {
             Please log in to continue to your account
           </p>
 
-          {/* Email/Password Login */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
               type="email"
@@ -98,14 +97,12 @@ export default function LoginPage() {
 
           {message && <p className="mt-4 text-center text-sm">{message}</p>}
 
-          {/* Divider */}
           <div className="flex items-center my-6">
             <div className="flex-grow border-t border-gray-300"></div>
             <span className="px-3 text-gray-500 text-sm">or</span>
             <div className="flex-grow border-t border-gray-300"></div>
           </div>
 
-          {/* Google Login */}
           <div className="flex justify-center">
             <GoogleLogin
               onSuccess={handleGoogleLogin}
@@ -114,7 +111,6 @@ export default function LoginPage() {
             />
           </div>
 
-          {/* Signup Link */}
           <div className="mt-6 text-center text-sm text-gray-500">
             <p>
               Don’t have an account?{" "}
