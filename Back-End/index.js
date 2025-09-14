@@ -15,7 +15,7 @@ import { authMiddleware } from "./middleware/auth.js";
 
 const app = express();
 
-app.use(cors({ origin: "https://clipnote-rho.vercel.app/", credentials: true }));
+app.use(cors({ origin: "https://clipnote-rho.vercel.app", credentials: true }));
 app.use(express.json());
 
 // ✅ Google Auth Client (for verifying tokens from frontend)
@@ -98,6 +98,4 @@ mongoose.connection.once("open", () => {
   console.log("✅ Connected to MongoDB");
 });
 
-app.listen(3000, () => {
-  console.log("🚀 Server running on http://localhost:3000");
-});
+export default app;
