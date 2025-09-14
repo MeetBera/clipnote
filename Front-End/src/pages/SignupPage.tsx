@@ -16,17 +16,14 @@ export default function SignupPage() {
   const navigate = useNavigate();
   const { loginWithGoogle, login } = useAuth();
 
-  // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Password strength check
   const isPasswordStrong = (password: string) => {
     return /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(password);
   };
 
-  // Signup handler
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage("");
@@ -38,7 +35,7 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:3000/auth/signup", {
+      const res = await fetch("https://clipnote-2ymu.vercel.app/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -65,7 +62,7 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:3000/auth/verify-otp", {
+      const res = await fetch("https://clipnote-2ymu.vercel.app/auth/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: form.email, otp }),
@@ -92,7 +89,7 @@ export default function SignupPage() {
     setMessage("");
 
     try {
-      const res = await fetch("http://localhost:3000/auth/resend-otp", {
+      const res = await fetch("https://clipnote-2ymu.vercel.app/auth/resend-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: form.email }),
