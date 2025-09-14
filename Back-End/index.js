@@ -11,12 +11,11 @@ import userModel from "./models/userModel.js";
 import summaryRoutes from "./routes/summaryRoutes.js";
 import youtubeRoutes from "./routes/youtube.js";
 import authRoutes from "./routes/authRoutes.js";
-import { authMiddleware } from "./middleware/auth.js"; // ✅ import middleware
+import { authMiddleware } from "./middleware/auth.js";
 
 const app = express();
 
-// ✅ Allow frontend requests
-app.use(cors({ origin: "http://localhost:8080", credentials: true }));
+app.use(cors({ origin: "https://clipnote-rho.vercel.app/", credentials: true }));
 app.use(express.json());
 
 // ✅ Google Auth Client (for verifying tokens from frontend)
