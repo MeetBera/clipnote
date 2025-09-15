@@ -93,9 +93,9 @@ app.use("/", authMiddleware, summaryRoutes); // ✅ protect summary routes
 
 // ✅ MongoDB connect
 console.log("JWT_SECRET:", process.env.JWT_SECRET);
-mongoose.connect(process.env.MONGO_URI);
-mongoose.connection.once("open", () => {
-  console.log("✅ Connected to MongoDB");
-});
+mongoose.connect(process.env.MONGO_URI, {
+})
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch(err => console.error("❌ MongoDB connection error:", err));
 
 export default app;
