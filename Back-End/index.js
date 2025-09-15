@@ -93,7 +93,7 @@ app.use("/", authMiddleware, summaryRoutes); // ✅ protect summary routes
 
 // ✅ MongoDB connect
 console.log("JWT_SECRET:", process.env.JWT_SECRET);
-mongoose.connect("mongodb://127.0.0.1:27017/clipnote");
+mongoose.connect(process.env.MONGO_URI);
 mongoose.connection.once("open", () => {
   console.log("✅ Connected to MongoDB");
 });
