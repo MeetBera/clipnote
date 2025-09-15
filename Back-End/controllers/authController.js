@@ -7,7 +7,9 @@ import transporter from "../utils/emailTransporter.js"; // nodemailer transporte
 export const signup = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-
+    console.log("📩 Signup body:", req.body);
+    console.log("✅ EMAIL_USER:", process.env.EMAIL_USER);
+    console.log("✅ JWT_SECRET exists?", !!process.env.JWT_SECRET);
     // check if already registered
     const existing = await User.findOne({ email });
     if (existing) {
