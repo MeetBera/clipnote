@@ -35,7 +35,7 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
-      const res = await fetch("https://clipnote-2ymu-imvzv8x2q-meets-projects-59cad792.vercel.app/auth/signup", {
+      const res = await fetch("https://clipnote-2ymu.vercel.app/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -62,7 +62,7 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("https://clipnote-2ymu-imvzv8x2q-meets-projects-59cad792.vercel.app/auth/verify-otp", {
+      const res = await fetch("https://clipnote-2ymu.vercel.app/auth/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: form.email, otp }),
@@ -89,7 +89,7 @@ export default function SignupPage() {
     setMessage("");
 
     try {
-      const res = await fetch("https://clipnote-2ymu-imvzv8x2q-meets-projects-59cad792.vercel.app/auth/resend-otp", {
+      const res = await fetch("https://clipnote-2ymu.vercel.app/auth/resend-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: form.email }),
