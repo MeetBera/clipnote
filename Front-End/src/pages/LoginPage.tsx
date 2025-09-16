@@ -24,7 +24,7 @@ export default function LoginPage() {
     setMessage("");
 
     try {
-      const res = await fetch("https://clipnote-2ymu.vercel.app/auth/login", {
+      const res = await fetch("https://clipnote-2ymu-imvzv8x2q-meets-projects-59cad792.vercel.app/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
