@@ -85,13 +85,13 @@ export const PricingSection = () => {
     <section id="pricing" className="py-20 bg-gradient-hero dark:bg-zinc-900 text-black dark:text-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold text-foreground mb-6">
             Simple{' '}
             <span className="bg-gradient-primary bg-clip-text text-transparent">
               Pricing
             </span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-base lg:text-2xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
             Choose the perfect plan for your video summarization needs
           </p>
         </div>
@@ -148,16 +148,6 @@ export const PricingSection = () => {
               </CardContent>
             </Card>
           ))}
-        </div>
-
-        {/* Money Back Guarantee */}
-        <div className="text-center mt-16 animate-fade-in">
-          <div className="bg-card/50 rounded-2xl p-8 max-w-2xl mx-auto border border-border">
-            <h3 className="text-xl font-semibold text-foreground mb-2">30-Day Money Back Guarantee</h3>
-            <p className="text-muted-foreground">
-              Not satisfied? Get a full refund within 30 days, no questions asked.
-            </p>
-          </div>
         </div>
       </div>
     </section>
