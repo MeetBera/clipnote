@@ -47,7 +47,7 @@ export const FeaturesSection = () => {
     <section id="features" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold text-foreground mb-6">
             Explore Our{' '}
             <span className="bg-gradient-primary bg-clip-text text-transparent">
               AI Capabilities
