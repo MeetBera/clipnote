@@ -53,7 +53,7 @@ export const FeaturesSection = () => {
               AI Capabilities
             </span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-base lg:text-2xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
             Powerful tools to transform videos, books, and documents into knowledge you can use
           </p>
         </div>
