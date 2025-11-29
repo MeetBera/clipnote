@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { FileText, StickyNote, BookOpen, AlignLeft, Languages, Sparkles } from 'lucide-react';
 
 export const FeaturesSection = () => {
-  
+
   const features = [
     {
       icon: FileText,
@@ -14,24 +14,24 @@ export const FeaturesSection = () => {
     {
       icon: StickyNote,
       title: 'Short Summary',
-      description: 'Generate a quick, to-the-point summary of your video for instant understanding.',
+      description: 'Generate a quick, to-the-point concise summary of your video for instant understanding.',
       color: 'text-green-500'
     },
     {
       icon: AlignLeft,
-      title: 'Detailed Summary',
+      title: 'Explanation',
       description: 'Dive deeper with comprehensive summaries covering all key details and insights.',
       color: 'text-purple-500'
     },
     {
       icon: BookOpen,
-      title: 'Book Summary (Coming Soon)',
-      description: 'Turn lengthy books into digestible summaries to save time and boost learning.',
+      title: 'Book Summary',
+      description: 'Turn lengthy books into digestible, clean summaries to save time and boost your learning.',
       color: 'text-orange-500'
     },
     {
       icon: FileText,
-      title: 'Document Summary (Coming Soon)',
+      title: 'Document Summary',
       description: 'Upload PDFs, docs, or research papers and get smart AI-powered summaries.',
       color: 'text-pink-500'
     },
@@ -58,32 +58,34 @@ export const FeaturesSection = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 grid-cols-2 lg:grid-cols-3 gap-1 lg:gap-4 md:gap-4">
           {features.map((feature, index) => (
             <Card
               key={index}
-              className="bg-gradient-card border-border hover:shadow-card transition-all duration-300 animate-slide-up group hover:-translate-y-2"
+              className="bg-gradient-card border-border hover:shadow-card transition-all duration-300 animate-slide-up group hover:-translate-y-2 overflow-hidden"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              
+
               <CardHeader>
-                
-                <div className="w-12 h-12 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+
+                <div className="w-8 h-8 lg:w-12 lg:h-12 md:w-12 md:h-12 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                   <feature.icon className="h-6 w-6 text-green-500" />
                 </div>
-                <CardTitle className="text-xl text-foreground">{feature.title}</CardTitle>
+                <CardTitle className="text-sm lg:text-xl lg:font-semibold md:font-semibold md:text-xl text-foreground">{feature.title}</CardTitle>
               </CardHeader>
-              <CardContent>
-                <CardDescription className="text-muted-foreground mb-4 leading-relaxed">
+              <CardContent className="relative px-8 pb-8">
+                <CardDescription className="text-muted-foreground lg:text-sm text-[12px] mb-2 leading-relaxed">
                   {feature.description}
                 </CardDescription>
+
                 <Button
-                  size="lg"
-                  className="w-full bg-gradient-primary text-primary-foreground hover:shadow-glow transition-all px-8 py-4"
+                  size="sm"
+                  className="w-full rounded-md bg-gradient-primary text-primary-foreground hover:shadow-glow transition-all px-4 py-2"
                 >
                   {feature.title.includes('Coming Soon') ? 'Coming Soon' : 'Try Now'}
                 </Button>
               </CardContent>
+
             </Card>
           ))}
         </div>
