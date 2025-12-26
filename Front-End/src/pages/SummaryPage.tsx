@@ -7,6 +7,8 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { useApi } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const extractVideoId = (url: string): string | null => {
   try {
@@ -36,7 +38,7 @@ export default function SummaryPage() {
   const [videoData, setVideoData] = useState<VideoSummary | null>(null);
   const [previousSummaries, setPreviousSummaries] = useState<VideoSummary[]>([]);
   const [loading, setLoading] = useState(false);
-  
+
   // Mobile Sidebar State
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -46,7 +48,7 @@ export default function SummaryPage() {
 
     const loadSummaries = async () => {
       try {
-        const data = await apiFetch("/summaries");
+        const data = await apiFetch("/api/summary");
         setPreviousSummaries(data);
       } catch (err: any) {
         console.error("Failed to load summaries:", err);
@@ -59,6 +61,14 @@ export default function SummaryPage() {
     loadSummaries();
   }, [apiFetch, token, isLoading]);
 
+  // Auto-select latest summary when landing on /summary
+  useEffect(() => {
+    if (!videoData && previousSummaries.length > 0) {
+      setVideoData(previousSummaries[0]); // most recent
+    }
+  }, [previousSummaries, videoData]);
+
+
   const fetchVideoDetails = async (videoId: string) => {
     if (!token) return;
     setLoading(true);
@@ -66,7 +76,7 @@ export default function SummaryPage() {
     try {
       // Check DB first
       try {
-        const existingData = await apiFetch(`/summary/${videoId}`);
+        const existingData = await apiFetch(`/api/summary/${videoId}`);
         if (existingData?.summary) {
           setVideoData(existingData);
           setPreviousSummaries((prev) =>
@@ -96,7 +106,7 @@ export default function SummaryPage() {
       setVideoData(newVideo);
 
       // Process video on backend
-      const backendData = await apiFetch("/process", {
+      const backendData = await apiFetch("/api/summary", {
         method: "POST",
         body: JSON.stringify({
           url: `https://www.youtube.com/watch?v=${videoId}`,
@@ -173,11 +183,10 @@ export default function SummaryPage() {
         previousSummaries.map((item) => (
           <li
             key={item.videoId}
-            className={`cursor-pointer p-3 rounded-lg transition-colors text-sm ${
-              videoData?.videoId === item.videoId
-                ? "bg-primary/10 text-primary border border-primary/20"
-                : "hover:bg-muted"
-            }`}
+            className={`cursor-pointer p-3 rounded-lg transition-colors text-sm ${videoData?.videoId === item.videoId
+              ? "bg-primary/10 text-primary border border-primary/20"
+              : "hover:bg-muted"
+              }`}
             onClick={() => selectVideo(item.videoId)}
           >
             <p className="font-medium truncate line-clamp-2">{item.title}</p>
@@ -204,9 +213,9 @@ export default function SummaryPage() {
       <Header />
       {/* Container with top margin to account for fixed header */}
       <div className="flex min-h-[calc(100vh-80px)] mt-20 bg-background text-foreground relative">
-        
+
         {/* --- Desktop Sidebar (Hidden on mobile) --- */}
-        <aside className="hidden md:flex w-72 border-r border-border bg-card p-4 overflow-y-auto flex-col sticky top-20 h-[calc(100vh-80px)]">
+        <aside className="hidden md:flex w-80 border-r border-border bg-card p-4 overflow-y-auto flex-col ml-4 sticky top-24 h-[calc(100vh-80px)]">
           <h2 className="text-lg font-semibold mb-2 px-2">Previous Summaries</h2>
           <SidebarList />
         </aside>
@@ -214,17 +223,16 @@ export default function SummaryPage() {
         {/* --- Mobile Sidebar (Slide-over) --- */}
         {/* Overlay */}
         {isMobileMenuOpen && (
-          <div 
+          <div
             className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
             onClick={() => setIsMobileMenuOpen(false)}
           />
         )}
-        
+
         {/* Drawer */}
-        <div 
-          className={`fixed inset-y-0 left-0 z-50 w-[80%] max-w-sm bg-card border-r shadow-2xl transform transition-transform duration-300 ease-in-out md:hidden flex flex-col p-4 ${
-            isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+        <div
+          className={`fixed inset-y-0 left-0 z-50 w-[80%] max-w-sm bg-card border-r shadow-2xl transform transition-transform duration-300 ease-in-out md:hidden flex flex-col p-4 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
         >
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-lg font-semibold">Previous Summaries</h2>
@@ -244,9 +252,9 @@ export default function SummaryPage() {
               History
             </Button>
             {videoData && (
-               <span className="text-sm text-muted-foreground truncate flex-1">
-                 Current: {videoData.title}
-               </span>
+              <span className="text-sm text-muted-foreground truncate flex-1">
+                Current: {videoData.title}
+              </span>
             )}
           </div>
 
@@ -259,7 +267,9 @@ export default function SummaryPage() {
               {loading ? "Loading..." : "No video URL found. Please provide a YouTube URL in the query parameter."}
             </div>
           ) : (
-            <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-500">
+            <div className="max-w-6xl mx-auto space-y-6 animate-in fade-in duration-500">
+
+              {/* Header Section */}
               <div className="flex flex-col md:flex-row md:items-center gap-3">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-primary/10 rounded-full">
@@ -269,37 +279,52 @@ export default function SummaryPage() {
                 </div>
               </div>
 
-              <div className="relative group">
-                {videoData.thumbnail ? (
-                  <img
-                    src={videoData.thumbnail}
-                    alt={videoData.title}
-                    className="rounded-xl w-full object-cover max-h-60 md:max-h-96 shadow-md border border-border"
-                  />
-                ) : (
-                  <div className="rounded-xl w-full h-48 md:h-96 shadow-md border border-border flex items-center justify-center bg-muted text-muted-foreground">
-                    No thumbnail available
-                  </div>
-                )}
-              </div>
+              {/* Main Content: Flex container for Side-by-Side layout */}
+              <div className="flex flex-col gap-6 items-start">
 
-              <div className="bg-card border border-border rounded-xl p-4 md:p-6 shadow-sm">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-border/50">
-                  <h2 className="text-xl font-semibold">Summary</h2>
-                  <div className="flex gap-2">
-                    <Button size="sm" variant="outline" onClick={copyToClipboard} className="flex-1 sm:flex-none">
-                      <ClipboardCopy className="w-4 h-4 mr-1" />
-                      Copy
-                    </Button>
-                    <Button size="sm" variant="outline" onClick={shareLink} className="flex-1 sm:flex-none">
-                      <Share2 className="w-4 h-4 mr-1" />
-                      Share
-                    </Button>
+                {/* Left Column: Compact Thumbnail */}
+                <div className="w-full md:w-[350px] shrink-0">
+                  <div className="rounded-xl overflow-hidden border border-border shadow-md bg-muted sticky top-6">
+                    {videoData.thumbnail ? (
+                      <img
+                        src={videoData.thumbnail}
+                        alt={videoData.title}
+                        className="w-full aspect-video object-cover"
+                      />
+                    ) : (
+                      <div className="w-full aspect-video flex items-center justify-center bg-muted text-muted-foreground text-sm">
+                        No thumbnail
+                      </div>
+                    )}
                   </div>
                 </div>
-                <article className="prose prose-sm md:prose-base dark:prose-invert max-w-none text-muted-foreground leading-relaxed whitespace-pre-line">
-                  {videoData.summary}
-                </article>
+
+                {/* Right Column: Summary Content */}
+                <div className="flex-1 w-full min-w-0"> {/* min-w-0 fixes text overflow issues in flex children */}
+                  <div className="bg-card border border-border rounded-xl p-4 md:p-6 shadow-sm">
+
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-border/50">
+                      <h2 className="text-xl font-semibold">Summary</h2>
+                      <div className="flex gap-2">
+                        <Button size="sm" variant="outline" onClick={copyToClipboard} className="flex-1 sm:flex-none">
+                          <ClipboardCopy className="w-4 h-4 mr-1" />
+                          Copy
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={shareLink} className="flex-1 sm:flex-none">
+                          <Share2 className="w-4 h-4 mr-1" />
+                          Share
+                        </Button>
+                      </div>
+                    </div>
+
+                    <article className="prose prose-sm md:prose-base dark:prose-invert max-w-none leading-relaxed">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {videoData.summary}
+                      </ReactMarkdown>
+                    </article>
+                  </div>
+                </div>
+
               </div>
             </div>
           )}
